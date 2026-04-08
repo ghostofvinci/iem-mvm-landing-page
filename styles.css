@@ -238,40 +238,72 @@ h1, h2, h3, h4 {
 }
 
 /* =========================================================================
-   CASES SECTION
+   CASES SECTION (Infinite Carousel)
    ========================================================================= */
 .cases-section {
     padding: 100px 0;
     text-align: center;
+    overflow: hidden; /* Avoid horizontal scrollbar on body */
 }
 
-.cases-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
+.carousel-container {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     margin-top: 50px;
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+    /* Sombras laterais para fade-out suave */
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.carousel-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: scrollMarquee 40s linear infinite;
+}
+
+.carousel-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 15px)); /* -50% da track (6 imgs originais) + compensar o gap central */ }
 }
 
 .case-card {
-    background: var(--bg-glass);
+    background: rgba(20, 20, 20, 0.4);
     border: 1px solid var(--border-glass);
     border-radius: 12px;
     padding: 10px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    width: 280px;
+    height: 480px;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .case-card:hover {
-    transform: scale(1.03);
-    border-color: rgba(212, 175, 55, 0.4);
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(212, 175, 55, 0.5);
+    background: rgba(25, 25, 25, 0.8);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
 }
 
 .case-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 8px;
     object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
 }
 
 .image-skeleton {
