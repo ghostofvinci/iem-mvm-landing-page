@@ -256,10 +256,22 @@ h1, h2, h3, h4 {
     background: var(--bg-glass);
     border: 1px solid var(--border-glass);
     border-radius: 12px;
-    padding: 15px;
-    aspect-ratio: 9/16;
+    padding: 10px;
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.case-card:hover {
+    transform: scale(1.03);
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+.case-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain;
 }
 
 .image-skeleton {
