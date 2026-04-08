@@ -65,15 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkoutBaseUrl = 'https://pay.herospark.com/evento-presencial-mvm-514932';
         
         const rawPhone = phone.replace(/\D/g, '');
+        
+        // Evitando URLSearchParams porque ele converte espaço em '+' e a plataforma da HeroSpark 
+        // parece falhar na decodificação, rejeitando nomes com espaço (ex: "Nome+da+Silva")
+        const queryString = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&tel=${rawPhone}&utm_source=${encodeURIComponent(revenue)}`;
 
-        const params = new URLSearchParams({
-            name: name,
-            email: email,
-            tel: rawPhone, // Parâmetro oficial da HeroSpark para telefone
-            utm_source: revenue 
-        });
-
-        window.location.href = `${checkoutBaseUrl}?${params.toString()}`;
+        window.location.href = `${checkoutBaseUrl}?${queryString}`;
     });
 
     // ==========================================
