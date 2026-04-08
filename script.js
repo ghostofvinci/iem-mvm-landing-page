@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // ENVIO DO MODAL (Webhook + Checkout)
     // ==========================================
-    const leadForm = document.getElementById('lead-form');
     
     leadForm.addEventListener('submit', function(e) {
         e.preventDefault();
