@@ -62,20 +62,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // CARROSSEL JS (Auto-scroll + Botões)
     // ==========================================
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
     const carousel = document.getElementById('carousel');
     const track = document.getElementById('track');
     const btnPrev = document.querySelector('.carousel-nav.prev');
     const btnNext = document.querySelector('.carousel-nav.next');
 
     if(carousel && track && btnPrev && btnNext) {
-        let scrollSpeed = 1; 
+        let scrollSpeed = 0.4; // Metade da velocidade (mais suave)
         let animationId;
         let isHovered = false;
+        let isAnimating = false; // Prevents R-A-F from fighting the smooth button scroll
 
         function autoScroll() {
-            if(!isHovered) {
+            if(!isHovered && !isAnimating) {
                 carousel.scrollLeft += scrollSpeed;
-                // Se o scroll atingir metade do track (onde a duplicata começa), reseta suavemente
+                // Se o scroll atingir metade do track, reseta instantaneamente invisível
                 if(carousel.scrollLeft >= track.scrollWidth / 2) {
                     carousel.style.scrollBehavior = 'auto';
                     carousel.scrollLeft = 0;
@@ -84,32 +86,43 @@ document.addEventListener('DOMContentLoaded', () => {
             animationId = requestAnimationFrame(autoScroll);
         }
         
-        autoScroll(); // Inicia
+        autoScroll();
 
-        // Pausar drag ou hover
-        carousel.addEventListener('mouseenter', () => isHovered = true);
-        carousel.addEventListener('mouseleave', () => isHovered = false);
-        carousel.addEventListener('touchstart', () => isHovered = true, {passive: true});
-        carousel.addEventListener('touchend', () => isHovered = false);
+        // Pausar drag ou hover (agora atrelado ao WRAPPER geral, inclui botoes)
+        carouselWrapper.addEventListener('mouseenter', () => isHovered = true);
+        carouselWrapper.addEventListener('mouseleave', () => isHovered = false);
+        carouselWrapper.addEventListener('touchstart', () => isHovered = true, {passive: true});
+        carouselWrapper.addEventListener('touchend', () => isHovered = false);
 
         btnNext.addEventListener('click', () => {
-            // Se estivermos saindo pro final, limpa o comportamento
+            isAnimating = true;
             carousel.style.scrollBehavior = 'smooth';
-            carousel.scrollBy({ left: 310, behavior: 'smooth' }); // largura de 1 card + gap
-            setTimeout(() => carousel.style.scrollBehavior = 'auto', 400);
+            carousel.scrollBy({ left: 310, behavior: 'smooth' }); // pula 1 card + gap
+            
+            // Retoma script após a finalização da animação natural
+            setTimeout(() => {
+                carousel.style.scrollBehavior = 'auto';
+                isAnimating = false;
+            }, 600);
         });
 
         btnPrev.addEventListener('click', () => {
+            isAnimating = true;
             if(carousel.scrollLeft < 310) {
-                // Pular pro espelho no meio pra simular o infinito pra tras
+                // Pula pro espelho lá no meio sem animação
                 carousel.style.scrollBehavior = 'auto';
                 carousel.scrollLeft += track.scrollWidth / 2;
             }
+            // Aguarar o DOM processar o pulo seco, depois animar pra trás
             setTimeout(() => {
                 carousel.style.scrollBehavior = 'smooth';
                 carousel.scrollBy({ left: -310, behavior: 'smooth' });
-                setTimeout(() => carousel.style.scrollBehavior = 'auto', 400);
-            }, 10);
+                
+                setTimeout(() => {
+                    carousel.style.scrollBehavior = 'auto';
+                    isAnimating = false;
+                }, 600);
+            }, 50);
         });
     }
 });
