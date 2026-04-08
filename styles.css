@@ -504,6 +504,26 @@ h1, h2, h3, h4 {
     max-width: 800px;
     margin: 40px auto 0;
     aspect-ratio: 16/9;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-blocker {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.video-blocker.top {
+    top: 0;
+    height: 20%;
+}
+
+.video-blocker.bottom {
+    bottom: 0;
+    height: 25%;
 }
 
 .video-skeleton {
