@@ -64,15 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Redirecionamento para a HeroSpark enviando os parâmetros na URL
         const checkoutBaseUrl = 'https://pay.herospark.com/evento-presencial-mvm-514932';
         
-        // HeroSpark parameters - We send various formats to guarantee the catch
         const rawPhone = phone.replace(/\D/g, '');
-        const phoneWithDDI = rawPhone.length <= 11 ? '55' + rawPhone : rawPhone; // +55 embutido caso exija DDI
+        const phoneWithDDI = rawPhone.length <= 11 ? '55' + rawPhone : rawPhone;
 
         const params = new URLSearchParams({
             name: name,
             email: email,
+            // Shotgun phone fields para cobrir todos os padrões que a HeroSpark possa aceitar
             phone: rawPhone,          
             phone_number: phoneWithDDI,
+            phoneNumber: phone, // Passando formatado (11) 99999-9999
+            cellphone: rawPhone,
+            telefone: rawPhone,
+            whatsapp: rawPhone,
             utm_source: revenue 
         });
 
