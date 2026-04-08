@@ -53,11 +53,63 @@ document.addEventListener('DOMContentLoaded', () => {
             name: name,
             email: email,
             phone: phone,
-            // A plataforma da herospark normalmente ignora parâmetros extras que não são campos de checkout, mas repassamos.
             utm_source: revenue 
         });
 
-        // Redireciona para o Checkout com os dados pré-preenchidos
         window.location.href = `${checkoutBaseUrl}?${params.toString()}`;
     });
+
+    // ==========================================
+    // CARROSSEL JS (Auto-scroll + Botões)
+    // ==========================================
+    const carousel = document.getElementById('carousel');
+    const track = document.getElementById('track');
+    const btnPrev = document.querySelector('.carousel-nav.prev');
+    const btnNext = document.querySelector('.carousel-nav.next');
+
+    if(carousel && track && btnPrev && btnNext) {
+        let scrollSpeed = 1; 
+        let animationId;
+        let isHovered = false;
+
+        function autoScroll() {
+            if(!isHovered) {
+                carousel.scrollLeft += scrollSpeed;
+                // Se o scroll atingir metade do track (onde a duplicata começa), reseta suavemente
+                if(carousel.scrollLeft >= track.scrollWidth / 2) {
+                    carousel.style.scrollBehavior = 'auto';
+                    carousel.scrollLeft = 0;
+                }
+            }
+            animationId = requestAnimationFrame(autoScroll);
+        }
+        
+        autoScroll(); // Inicia
+
+        // Pausar drag ou hover
+        carousel.addEventListener('mouseenter', () => isHovered = true);
+        carousel.addEventListener('mouseleave', () => isHovered = false);
+        carousel.addEventListener('touchstart', () => isHovered = true, {passive: true});
+        carousel.addEventListener('touchend', () => isHovered = false);
+
+        btnNext.addEventListener('click', () => {
+            // Se estivermos saindo pro final, limpa o comportamento
+            carousel.style.scrollBehavior = 'smooth';
+            carousel.scrollBy({ left: 310, behavior: 'smooth' }); // largura de 1 card + gap
+            setTimeout(() => carousel.style.scrollBehavior = 'auto', 400);
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if(carousel.scrollLeft < 310) {
+                // Pular pro espelho no meio pra simular o infinito pra tras
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft += track.scrollWidth / 2;
+            }
+            setTimeout(() => {
+                carousel.style.scrollBehavior = 'smooth';
+                carousel.scrollBy({ left: -310, behavior: 'smooth' });
+                setTimeout(() => carousel.style.scrollBehavior = 'auto', 400);
+            }, 10);
+        });
+    }
 });

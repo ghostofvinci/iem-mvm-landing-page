@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -65,9 +65,11 @@
         <div class="container">
             <h2 class="section-title">Resultados que a estrutura gera na prática</h2>
             
-            <!-- CARROSSEL INFINITO (Marquee) -->
-            <div class="carousel-container">
-                <div class="carousel-track">
+            <!-- CARROSSEL INFINITO (JS Controlled) -->
+            <div class="carousel-wrapper">
+                <button class="carousel-nav prev" aria-label="Voltar">&#10094;</button>
+                <div class="carousel-container" id="carousel">
+                    <div class="carousel-track" id="track">
                     <!-- Original -->
                     <div class="case-card">
                         <img src="assets/cases/case-1.jpeg" alt="Caso de Sucesso" class="case-image">
@@ -106,7 +108,10 @@
                     <div class="case-card">
                         <img src="assets/cases/case-6.png" alt="Caso de Sucesso" class="case-image">
                     </div>
+                    </div>
                 </div>
+                <!-- Track Ends -->
+                <button class="carousel-nav next" aria-label="Avançar">&#10095;</button>
             </div>
             
         </div>
@@ -265,6 +270,6 @@
     </div>
 
     <!-- SCRIPT DE MANIPULAÇÃO -->
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
