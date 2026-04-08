@@ -39,15 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         leads.push(lead);
         localStorage.setItem('mvm_leads', JSON.stringify(leads));
 
-        // Opcional: Aqui entraria uma chamada fetch() para um Webhook (n8n, Make, Zapier) 
-        // para salvar também em uma planilha do Google Sheets de forma muito mais segura que GitHub
-        /*
-        fetch('SUA_URL_DO_WEBHOOK_AQUI', {
+        // Disparo do Webhook para o n8n
+        fetch('https://webhook.datahacklab.com.br/webhook/92f25a27-927b-4e32-988b-b215cebc9aaa', {
             method: 'POST',
             body: JSON.stringify(lead),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        */
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        }).catch(err => console.error('Erro ao salvar lead:', err));
 
         // 2. Redirecionamento para a HeroSpark enviando os parâmetros na URL
         const checkoutBaseUrl = 'https://pay.herospark.com/evento-presencial-mvm-514932';
