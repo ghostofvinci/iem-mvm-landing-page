@@ -247,21 +247,24 @@ h1, h2, h3, h4 {
 }
 
 .carousel-container {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    width: 100%;
     margin-top: 50px;
     overflow: hidden;
     position: relative;
     padding: 20px 0;
     /* Sombras laterais para fade-out suave */
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 .carousel-track {
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap;
     gap: 30px;
     width: max-content;
+    will-change: transform;
     animation: scrollMarquee 40s linear infinite;
 }
 
@@ -279,16 +282,18 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border-glass);
     border-radius: 12px;
     padding: 10px;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: all 0.4s ease;
-    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
     height: 480px;
-    flex-shrink: 0;
+    flex: 0 0 280px;
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    white-space: normal;
 }
 
 .case-card:hover {
