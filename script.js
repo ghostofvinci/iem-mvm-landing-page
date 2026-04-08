@@ -24,13 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Form Submit - Redirect with parameters
-    leadForm.addEventListener('submit', (e) => {
+    // ==========================================
+    // MASCARA DE TELEFONE (DDD) 99999-9999
+    // ==========================================
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+    }
+
+    // ==========================================
+    // ENVIO DO MODAL (Webhook + Checkout)
+    // ==========================================
+    const leadForm = document.getElementById('lead-form');
+    
+    leadForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
+        // 1. Coleta dos dados
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
+        const phone = phoneInput.value;
         const revenue = document.getElementById('revenue').value;
 
         // 1. Armazenando no LocalStorage como medida de segurança/backup no navegador
@@ -49,15 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Redirecionamento para a HeroSpark enviando os parâmetros na URL
         const checkoutBaseUrl = 'https://pay.herospark.com/evento-presencial-mvm-514932';
         
-        // HeroSpark costuma rejeitar parênteses e traços, exige apenas os números do checkout
+        // HeroSpark parameters - We send various formats to guarantee the catch
         const rawPhone = phone.replace(/\D/g, '');
+        const phoneWithDDI = rawPhone.length <= 11 ? '55' + rawPhone : rawPhone; // +55 embutido caso exija DDI
 
         const params = new URLSearchParams({
             name: name,
             email: email,
-            phone: rawPhone,          // Padrão 1
-            phone_number: rawPhone,   // Padrão 2 (HeroSpark alternativo)
-            celular: rawPhone,        // Padrão 3 (HeroSpark PT)
+            phone: rawPhone,          
+            phone_number: phoneWithDDI,
             utm_source: revenue 
         });
 
