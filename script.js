@@ -46,10 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = phoneInput.value;
+        const mentorship = document.getElementById('mentorship').value;
         const revenue = document.getElementById('revenue').value;
 
         // 1. Armazenando no LocalStorage como medida de segurança/backup no navegador
-        const lead = { name, email, phone, revenue, date: new Date().toISOString() };
+        const lead = { name, email, phone, mentorship, revenue, date: new Date().toISOString() };
         let leads = JSON.parse(localStorage.getItem('mvm_leads') || '[]');
         leads.push(lead);
         localStorage.setItem('mvm_leads', JSON.stringify(leads));
