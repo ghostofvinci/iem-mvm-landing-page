@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const leadForm = document.getElementById('lead-form');
 
     // ==========================================
-    // CAPTURA DE UTM/VENDEDOR DA URL
+    // CAPTURA DE UTM/EXPERT DA URL
     // ==========================================
     const urlParams = new URLSearchParams(window.location.search);
-    let sellerParam = urlParams.get('vendedor') || urlParams.get('src') || urlParams.get('utm_source');
+    let expertParam = urlParams.get('expert') || urlParams.get('src') || urlParams.get('utm_source');
     
-    // Salva na sessão para caso o lead atualize a página ele não perder o tagueamento do vendedor
-    if (sellerParam) {
-        sessionStorage.setItem('mvm_seller', sellerParam);
+    // Salva na sessão para caso o lead atualize a página ele não perder o tagueamento do expert
+    if (expertParam) {
+        sessionStorage.setItem('mvm_expert', expertParam);
     } else {
-        sellerParam = sessionStorage.getItem('mvm_seller') || 'Organico';
+        expertParam = sessionStorage.getItem('mvm_expert') || 'Organico';
     }
 
     // Open modal
@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = phoneInput.value;
         const mentorship = document.getElementById('mentorship').value;
         const revenue = document.getElementById('revenue').value;
-        const seller = sellerParam; // Tagueamento do vendedor
+        const expert = expertParam; // Tagueamento do expert
 
         // 1. Armazenando no LocalStorage como medida de segurança/backup no navegador
-        const lead = { name, email, phone, mentorship, revenue, seller, date: new Date().toISOString() };
+        const lead = { name, email, phone, mentorship, revenue, expert, date: new Date().toISOString() };
         let leads = JSON.parse(localStorage.getItem('mvm_leads') || '[]');
         leads.push(lead);
         localStorage.setItem('mvm_leads', JSON.stringify(leads));
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Evitando URLSearchParams porque ele converte espaço em '+' e a plataforma da HeroSpark 
         // parece falhar na decodificação, rejeitando nomes com espaço (ex: "Nome+da+Silva")
-        const queryString = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&tel=${rawPhone}&utm_source=${encodeURIComponent(revenue)}&sck=${encodeURIComponent(seller)}`;
+        const queryString = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&tel=${rawPhone}&utm_source=${encodeURIComponent(revenue)}&sck=${encodeURIComponent(expert)}`;
 
         window.location.href = `${checkoutBaseUrl}?${queryString}`;
     });
