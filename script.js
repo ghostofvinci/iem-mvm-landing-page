@@ -4,6 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.querySelector('.close-modal');
     const leadForm = document.getElementById('lead-form');
 
+    // ==========================================
+    // CAPTURA DE UTM/VENDEDOR DA URL
+    // ==========================================
+    const urlParams = new URLSearchParams(window.location.search);
+    let sellerParam = urlParams.get('vendedor') || urlParams.get('src') || urlParams.get('utm_source');
+    
+    // Salva na sessão para caso o lead atualize a página ele não perder o tagueamento do vendedor
+    if (sellerParam) {
+        sessionStorage.setItem('mvm_seller', sellerParam);
+    } else {
+        sellerParam = sessionStorage.getItem('mvm_seller') || 'Organico';
+    }
+
     // Open modal
     openButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -48,9 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = phoneInput.value;
         const mentorship = document.getElementById('mentorship').value;
         const revenue = document.getElementById('revenue').value;
+        const seller = sellerParam; // Tagueamento do vendedor
 
         // 1. Armazenando no LocalStorage como medida de segurança/backup no navegador
-        const lead = { name, email, phone, mentorship, revenue, date: new Date().toISOString() };
+        const lead = { name, email, phone, mentorship, revenue, seller, date: new Date().toISOString() };
         let leads = JSON.parse(localStorage.getItem('mvm_leads') || '[]');
         leads.push(lead);
         localStorage.setItem('mvm_leads', JSON.stringify(leads));
@@ -69,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Evitando URLSearchParams porque ele converte espaço em '+' e a plataforma da HeroSpark 
         // parece falhar na decodificação, rejeitando nomes com espaço (ex: "Nome+da+Silva")
-        const queryString = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&tel=${rawPhone}&utm_source=${encodeURIComponent(revenue)}`;
+        const queryString = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&tel=${rawPhone}&utm_source=${encodeURIComponent(revenue)}&sck=${encodeURIComponent(seller)}`;
 
         window.location.href = `${checkoutBaseUrl}?${queryString}`;
     });
