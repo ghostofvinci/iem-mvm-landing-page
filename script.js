@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(err => console.error('Erro ao salvar lead:', err));
 
         // 2. Redirecionamento para a HeroSpark enviando os parâmetros na URL
-        const checkoutBaseUrl = 'https://pay.herospark.com/evento-presencial-mvm-514932';
+        const checkoutBaseUrl = 'https://pay.herospark.com/mvm-evento-presencial-r-500-00-517533';
         
         const rawPhone = phone.replace(/\D/g, '');
         
